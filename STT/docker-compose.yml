@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  stt:
+    image: stt-ai-detector
+    container_name: stt-container
+    volumes:
+      - C:/stt/uploads:/app/input
+      - C:/stt/output:/app/Audio_result
+      - C:/stt/segments:/app/suspicious_segments

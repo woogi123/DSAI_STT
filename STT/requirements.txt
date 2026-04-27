@@ -1,0 +1,12 @@
+faster-whisper
+transformers
+torch
+torchaudio
+librosa
+numpy
+soundfile
+matplotlib
+edge-tts
+fastapi
+uvicorn
+python-multipart
