@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    const sttResponse = await fetch("http://stt-ai:8000/analyze", {
+    const sttResponse = await fetch("http://stt-ai:8000/api/analyze-audio", {
       method: "POST",
       body: form,
     });
@@ -37,16 +37,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: data.error }, { status: 500 });
     }
 
-    const manipulationScore = Math.round(data.ai_probability || 0);
-    
-    let reasons: string[] = [];
-    if (data.judgment_basis && data.judgment_basis.length > 0) {
-      reasons = data.judgment_basis;
-    } else {
-      reasons.push(data.final_label || "특이사항 없음");
-    }
+    const manipulationScore = data.manipulationScore || 0;
+    const reasons = data.reasons || ["특이사항 없음"];
+    const sttText = data.stt_text || "음성 텍스트를 추출하지 못했습니다.";
 
-    return NextResponse.json({ manipulationScore, reasons });
+    return NextResponse.json({ 
+        manipulationScore, 
+        reasons,
+        sttText 
+    });
+
 
   } catch (error: unknown) {
     console.error("통신 에러:", error);

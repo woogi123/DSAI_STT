@@ -1,7 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone"
+  output: "standalone",
+  
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'http://stt-ai:8000/api/:path*', 
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
-

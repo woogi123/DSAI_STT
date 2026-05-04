@@ -110,23 +110,19 @@ export default function Page() {
       
       // 1. Next.js API 호출
       const res = await fetch("/api/analyze-audio", { method: "POST", body: fd });
-      // 여기서 rawData는 방금 우리가 수정한 Next.js API가 보내주는 { manipulationScore, reasons } 입니다!
       const rawData = await res.json(); 
 
       console.log("🔥 서버에서 도착한 데이터:", rawData);
       
       if (!res.ok) throw new Error(rawData.error || "음성 분석 실패");
 
-      // 💡 2. Next.js API가 이미 예쁘게 가공해서 주었으므로, 복잡한 변환 없이 그대로 꽂아줍니다.
       const formattedData: AnalyzeAudioResponse = {
         manipulationScore: rawData.manipulationScore || 0, 
         reasons: rawData.reasons || ["실제 사람 음성 가능성 높음"]
       };
 
-      // 3. 변환된 데이터를 상태 변수에 저장 (화면에 즉시 반영됨!)
       setAudioResult(formattedData);
 
-      // 4. (선택) 종합 산출(GPT 요약)을 위해 summarize API 호출
       try {
         const res2 = await fetch("/api/summarize", {
           method: "POST",
